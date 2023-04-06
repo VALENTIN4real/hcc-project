@@ -22,32 +22,6 @@ const checkApiKey = (req, res, next) => {
     }
 }
 
-
-const verifyToken = (role) => {
-    return (req, res, next) => {
-
-        const token = req.headers['x-access-token'];
-
-        if (!token) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-        try {
-            const decoded = jwt.verify(token, "secret");
-            console.log(decoded);
-
-            if (!decoded.role.includes(role)) {
-                return res.status(403).json({ message: `Unauthorized, you are not ${role}` });
-            }
-            next();
-
-        } catch (err) {
-            return res.status(403).json({ message: 'Forbidden' });
-        }
-    }
-}
-
-
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(checkApiKey)
